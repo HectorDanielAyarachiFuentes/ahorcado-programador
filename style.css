@@ -1,0 +1,205 @@
+/* Estilos generales */
+body {
+    text-align: center;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    background-color: #0d1117;
+    color: #58a6ff;
+    background-image: 
+        linear-gradient(rgba(13,17,23,0.95), rgba(13,17,23,0.95)),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231158c7' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Contenedor de palabras */
+#word-container {
+    font-size: 24px;
+    margin: 20px auto;
+    background-color: #161b22;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(88,166,255,0.1);
+    border: 1px solid #30363d;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 4px;
+    max-width: 700px;
+    position: relative;
+    overflow: hidden;
+}
+
+#word-container::before {
+    content: '>';
+    position: absolute;
+    left: 10px;
+    color: #58a6ff;
+    opacity: 0.5;
+}
+
+/* Contenedores */
+#guesses-container,
+#alphabet-container {
+    font-size: 16px;
+    margin: 15px auto;
+    background-color: #161b22;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    max-width: 600px;
+}
+
+/* Mensaje y pista */
+#message, #hint {
+    font-size: 15px;
+    color: #58a6ff;
+    text-shadow: 0 0 8px rgba(88,166,255,0.2);
+    margin: 12px 0;
+    padding: 8px;
+    background-color: #161b22;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#message.error {
+    color: #f85149;
+    border-color: #f85149;
+}
+
+/* Letras del abecedario */
+.alphabet-letter {
+    display: inline-block;
+    margin: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #21262d;
+    color: #58a6ff;
+    transition: all 0.2s ease;
+    min-width: 35px;
+}
+
+.alphabet-letter:hover {
+    background-color: #58a6ff;
+    color: #0d1117;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(88,166,255,0.2);
+}
+
+.alphabet-letter:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #21262d;
+    color: #8b949e;
+}
+
+/* Botones */
+#restart-button,
+#guess-button {
+    font-size: 14px;
+    padding: 10px 20px;
+    border: 1px solid #58a6ff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 8px;
+    background-color: transparent;
+    color: #58a6ff;
+    position: relative;
+    overflow: hidden;
+}
+
+#restart-button::before,
+#guess-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(88,166,255,0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+#restart-button:hover::before,
+#guess-button:hover::before {
+    left: 100%;
+}
+
+#restart-button:hover,
+#guess-button:hover {
+    background-color: #58a6ff;
+    color: #0d1117;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(88,166,255,0.2);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    #word-container {
+        font-size: 20px;
+        padding: 12px 20px;
+    }
+    
+    .alphabet-letter {
+        padding: 6px 10px;
+        margin: 3px;
+        min-width: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    #word-container {
+        font-size: 18px;
+        padding: 10px 15px;
+        letter-spacing: 3px;
+    }
+    
+    .alphabet-letter {
+        font-size: 12px;
+        padding: 5px 8px;
+        margin: 2px;
+        min-width: 25px;
+    }
+    
+    #restart-button,
+    #guess-button {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 320px) {
+    body {
+        padding: 10px;
+    }
+    
+    #word-container {
+        font-size: 16px;
+        padding: 8px 12px;
+        letter-spacing: 2px;
+    }
+    
+    .alphabet-letter {
+        font-size: 11px;
+        padding: 4px 6px;
+        margin: 2px;
+        min-width: 20px;
+    }
+}

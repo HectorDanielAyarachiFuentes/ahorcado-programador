@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Juego del ahorcado para programadores - Pon a prueba tus conocimientos de programación">
+    <meta name="keywords" content="juego, ahorcado, programación, javascript, html, css">
+    <meta name="author" content="Héctor Daniel Ayarachi Fuentes">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hectordanielayarachifuentes.github.io/ahorcado/">
+    <meta property="og:title" content="Juego del ahorcado">
+    <meta property="og:description" content="Un juego atrapante para programadores y probar sus conocimientos.">
+    <meta property="og:image" content="https://hectordanielayarachifuentes.github.io/ahorcado/Imagen-Metadato/Ahorcado.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Juego del ahorcado">
+    <meta name="twitter:description" content="Un juego atrapante para programadores y probar sus conocimientos.">
+    <meta name="twitter:image" content="https://hectordanielayarachifuentes.github.io/ahorcado/Imagen-Metadato/Ahorcado.png">
+
+    <!-- Favicon -->
+    <link type="image/png" sizes="120x120" rel="icon" href="https://github.com/HectorDanielAyarachiFuentes/TIENDA-RAMONCITO-POKEMONS/blob/main/Fotos/umbrella-corporation-120.png?raw=true">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <title>Programador Ahorcado | Juego de Palabras</title>
+</head>
+<body>
+    <header>
+        <h1>Programador Ahorcado</h1>
+    </header>
+
+    <main>
+        <div id="word-container" aria-live="polite">
+            <!-- Aquí se mostrará la palabra oculta con guiones bajos (_) -->
+        </div>
+
+        <div id="guesses-container" aria-label="Letras adivinadas">
+            <!-- Aquí se mostrarán las letras adivinadas -->
+        </div>
+
+        <div id="alphabet-container" role="group" aria-label="Teclado de letras">
+            <!-- Aquí se mostrará el abecedario -->
+        </div>
+
+        <p id="message" aria-live="assertive"></p>
+        <p id="hint" aria-live="polite"></p>
+        <p id="congratulations" aria-live="polite"></p>
+
+        <div class="button-container">
+            <button id="guess-button" aria-label="Comenzar juego">"Vive con alegría"</button>
+            <button id="restart-button" style="display: none;" aria-label="Reiniciar juego">Reiniciar Juego</button>
+        </div>
+
+        <audio id="audio-player" src="Babasonicos - Irresponsables.mp3" preload="auto"></audio>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Programador Ahorcado - Creado por Héctor Daniel Ayarachi Fuentes</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.1/dist/confetti.browser.min.js" defer></script>
+</body>
+</html>
