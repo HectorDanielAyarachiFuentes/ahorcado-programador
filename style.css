@@ -176,21 +176,43 @@ body {
     box-shadow: 0 5px 15px rgba(88,166,255,0.2);
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
+/* Media Queries - Tablets */
+@media (max-width: 1024px) {
     body {
         padding: 15px;
+        max-width: 90%;
+    }
+
+    #word-container {
+        font-size: 22px;
+        max-width: 90%;
+    }
+
+    .alphabet-letter {
+        padding: 7px 11px;
+        margin: 3px;
+        min-width: 32px;
+    }
+}
+
+/* Media Queries - Tablets pequeñas */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
     }
     
     #word-container {
         font-size: 20px;
         padding: 12px 20px;
+        max-width: 95%;
+        letter-spacing: 3px;
     }
     
     .alphabet-letter {
         padding: 6px 10px;
         margin: 3px;
         min-width: 30px;
+        font-size: 13px;
     }
 
     #restart-button {
@@ -199,13 +221,25 @@ body {
         padding: 10px 20px;
         font-size: 13px;
     }
+
+    #guesses-container,
+    #alphabet-container {
+        max-width: 95%;
+        padding: 12px;
+    }
 }
 
+/* Media Queries - Móviles */
 @media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
     #word-container {
-        font-size: 18px;
+        font-size: 16px;
         padding: 10px 15px;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
+        margin: 15px auto;
     }
     
     .alphabet-letter {
@@ -218,6 +252,7 @@ body {
     #guess-button {
         font-size: 12px;
         padding: 8px 16px;
+        margin: 5px;
     }
 
     #restart-button {
@@ -226,8 +261,15 @@ body {
         padding: 8px 16px;
         font-size: 12px;
     }
+
+    #message, #hint {
+        font-size: 13px;
+        padding: 6px;
+        margin: 8px 0;
+    }
 }
 
+/* Media Queries - Móviles pequeños */
 @media (max-width: 320px) {
     body {
         padding: 10px;
@@ -235,21 +277,32 @@ body {
     
     #word-container {
         font-size: 16px;
-        padding: 8px 12px;
+        padding: 10px 12px;
         letter-spacing: 2px;
     }
     
     .alphabet-letter {
-        font-size: 11px;
-        padding: 4px 6px;
-        margin: 2px;
-        min-width: 20px;
+        font-size: 16px;
+        padding: 8px 10px;
+        margin: 3px;
+        min-width: 32px;
     }
 
     #restart-button {
-        bottom: 8px;
-        right: 8px;
-        padding: 6px 12px;
-        font-size: 11px;
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    #guesses-container,
+    #alphabet-container {
+        padding: 10px;
+        margin: 12px auto;
+    }
+
+    #message, #hint {
+        font-size: 13px;
+        padding: 6px;
     }
 }
