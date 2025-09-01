@@ -1,257 +1,205 @@
-// Palabras para adivinar y sus pistas
-const palabrasSecretas = [
-  { palabra: "javascript", pista: "Lenguaje de programación web" },
-  { palabra: "python", pista: "Lenguaje de programación versátil" },
-  { palabra: "html", pista: "Lenguaje de marcado para páginas web" },
-  { palabra: "css", pista: "Lenguaje de estilos para páginas web" },
-  { palabra: "java", pista: "Lenguaje de programación orientado a objetos" },
-  { palabra: "php", pista: "Lenguaje de programación para desarrollo web" },
-  { palabra: "ruby", pista: "Lenguaje de programación interpretado" },
-  { palabra: "csharp", pista: "Lenguaje de programación de Microsoft" },
-  { palabra: "swift", pista: "Lenguaje de programación para aplicaciones iOS" },
-  { palabra: "android", pista: "Sistema operativo móvil de Google" },
-  { palabra: "mysql", pista: "Sistema de gestión de bases de datos relacional" },
-  { palabra: "mongodb", pista: "Base de datos NoSQL orientada a documentos" },
-  { palabra: "react", pista: "Biblioteca de JavaScript para construir interfaces de usuario" },
-  { palabra: "angular", pista: "Framework de JavaScript para desarrollo web" },
-  { palabra: "typescript", pista: "Lenguaje de programación basado en JavaScript" },
-  { palabra: "docker", pista: "Plataforma de contenedorización" },
-  { palabra: "linux", pista: "Sistema operativo de código abierto" },
-  { palabra: "git", pista: "Sistema de control de versiones" },
-  { palabra: "api", pista: "Interfaz de programación de aplicaciones" },
-  { palabra: "nodejs", pista: "Entorno de ejecución de JavaScript del lado del servidor" },
-  // Agrega más palabras y pistas aquí
-];
-// Palabra y pista actual
-let palabraActual = palabrasSecretas[0];
-let letrasAdivinadas = [];
-let intentosRestantes = 6;
-let juegoTerminado = false;
-// Elementos del DOM
-const wordContainer = document.getElementById("word-container");
-const guessesContainer = document.getElementById("guesses-container");
-const message = document.getElementById("message");
-const hint = document.getElementById("hint");
-const guessButton = document.getElementById("guess-button");
-const restartButton = document.getElementById("restart-button");
-// Inicializar la palabra oculta con guiones bajos
-let palabraOculta = "_".repeat(palabraActual.palabra.length);
-wordContainer.textContent = palabraOculta;
-// Mostrar la pista
-hint.textContent = `Pista: ${palabraActual.pista}`;
-// Frases de felicitación cuando el jugador gana
-const frasesGanar = [
-  "¡Felicitaciones! Eres un genio, ¡ganaste!",
-  "¡Eres increíble! Ganaste el juego del ahorcado.",
-  "¡Ganaste! Eres un maestro en esto.",
-  "Excelente trabajo, ¡ganaste!",
-  "¡Eres un adivino experto! Ganaste el juego.",
-  "¡Ganador absoluto! Felicidades.",
-  "¡Eres un verdadero campeón! Ganaste.",
-  "¡Triunfaste brillantemente! Eres el ganador.",
-  "¡Enhorabuena! Eres el vencedor indiscutible.",
-  "¡Bravo! Has demostrado tu destreza ganadora.",
-  "¡Victoria total! Eres un crack en esto.",
-  "¡Ganaste con estilo! Felicidades.",
-  "¡Eres el rey del ahorcado! Ganaste.",
-  "¡Increíble! Has conquistado el juego.",
-  "¡Dominaste el ahorcado! Eres el ganador.",
-  "¡Triunfaste con honor! Ganaste el juego.",
-  "¡Eres un ganador nato! Felicidades.",
-  "¡Victoria merecida! Eres un campeón.",
-  "¡Ganar es tu segundo nombre! Felicidades.",
-  "¡Eres un experto en esto! Ganaste.",
-  // Agrega más frases de felicitación aquí
-];
-// Frases de ánimo cuando el jugador pierde
-const frasesPerder = [
-  "No te preocupes, ¡la próxima vez lo harás mejor!",
-  "Cada error es una oportunidad para aprender. ¡Sigue intentando!",
-  "No hay derrotas, solo lecciones. ¡Sigue adelante!",
-  "La perseverancia es la clave del éxito. ¡No te rindas!",
-  "Recuerda, los campeones se levantan después de caer. ¡Sigue adelante!",
-  "Tus habilidades mejorarán con cada intento. ¡Sigue practicando!",
-  "¡La victoria es dulce, pero la derrota te hace más fuerte!",
-  "¡La próxima vez lo conseguirás! Mantén la determinación.",
-  "Cada intento te acerca más a la victoria. ¡No te desanimes!",
-  "El fracaso es solo un paso en el camino hacia el éxito. ¡Sigue adelante!",
-  "Tus esfuerzos no se desperdician. ¡Sigue intentando!",
-  "La persistencia es la madre del éxito. ¡No pares!",
-  "Cada derrota te acerca un paso más a la victoria final. ¡Sigue luchando!",
-  "Tienes el potencial para lograr grandes cosas. ¡Sigue esforzándote!",
-  "No importa cuántas veces caigas, lo importante es levantarse. ¡Sigue adelante!",
-  "Tu determinación es admirable. ¡No te rindas ahora!",
-  "¡El ahorcado no tiene oportunidad contra tu determinación!",
-  "Las derrotas temporales no definen tu futuro. ¡Sigue perseverando!",
-  "Tus esfuerzos te llevarán a la victoria. ¡Sigue intentando!",
-  "La paciencia y la práctica te llevarán al éxito. ¡Sigue adelante!",
-  // Agrega más frases de ánimo aquí
-];
-// Función para actualizar la palabra oculta con las letras adivinadas
-function actualizarPalabraOculta() {
-  let palabraMostrada = "";
-  for (let i = 0; i < palabraActual.palabra.length; i++) {
-    if (letrasAdivinadas.includes(palabraActual.palabra[i])) {
-      palabraMostrada += palabraActual.palabra[i];
-    } else {
-      palabraMostrada += "_";
-    }
-  }
-  palabraOculta = palabraMostrada;
-  wordContainer.textContent = palabraOculta;
-}
-// Función para manejar los intentos del jugador y verificar la victoria
-function manejarIntento(letra) {
-  if (juegoTerminado) {
-    message.textContent =
-      "El juego ha terminado. Pulsa Reiniciar Juego para jugar de nuevo.";
-    return;
-  }
-  letra = letra.toLowerCase();
-  if (letrasAdivinadas.includes(letra)) {
-    message.textContent = "Ya has adivinado esa letra.";
-    return;
-  }
-  letrasAdivinadas.push(letra);
-  if (palabraActual.palabra.includes(letra)) {
-    actualizarPalabraOculta();
-    if (palabraOculta === palabraActual.palabra) {
-      juegoTerminado = true;
-      const mensajeGanar =
-        frasesGanar[Math.floor(Math.random() * frasesGanar.length)];
-      message.textContent = "¡Ganaste! " + mensajeGanar;
-      guessButton.disabled = true;
-      restartButton.style.display = "block";
-      mostrarMensajeFinal();
-      if (juegoTerminado) {
-        startConfetiCascada();
-      }
-    } else {
-      message.textContent = "¡Correcto! Has adivinado una letra.";
-    }
-  } else {
-    intentosRestantes--;
-    if (intentosRestantes === 0) {
-      juegoTerminado = true;
-      const mensajePerder =
-        frasesPerder[Math.floor(Math.random() * frasesPerder.length)];
-      message.textContent =
-        "¡Perdiste! La palabra era: " +
-        palabraActual.palabra +
-        " " +
-        mensajePerder;
-      guessButton.disabled = true;
-      restartButton.style.display = "block";
-    } else {
-      message.textContent = `Intentos restantes: ${intentosRestantes}`;
-    }
-  }
-  guessesContainer.textContent = `Letras adivinadas: ${letrasAdivinadas.join(
-    ", "
-  )}`;
-}
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- MATRIX BACKGROUND Y TYPEWRITER (Sin cambios)---
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const alphabet = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const rainDrops = Array(Math.floor(columns)).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) { rainDrops[i] = 0; }
+                rainDrops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
+        function typeWriter(element, text, speed = 50, callback = () => {}) {
+            let i = 0;
+            element.innerHTML = "";
+            const type = () => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i); i++;
+                    setTimeout(type, speed);
+                } else { callback(); }
+            };
+            type();
+        }
 
-// Generar el abecedario
-const abecedario = "abcdefghijklmnopqrstuvwxyz";
-const alphabetContainer = document.getElementById("alphabet-container");
-for (let letra of abecedario) {
-  const letterButton = document.createElement("button");
-  letterButton.textContent = letra;
-  letterButton.classList.add("alphabet-letter");
-  letterButton.addEventListener("click", () => {
-    manejarIntento(letra); // Llama a manejarIntento con la letra correspondiente
-  });
-  alphabetContainer.appendChild(letterButton);
-}
-// Función para reiniciar el juego
-function reiniciarJuego() {
-  palabraActual = palabrasSecretas[Math.floor(Math.random() * palabrasSecretas.length)];
-  letrasAdivinadas = [];
-  intentosRestantes = 6;
-  juegoTerminado = false;
-  // Reinicia los elementos en el DOM
-  palabraOculta = "_".repeat(palabraActual.palabra.length);
-  wordContainer.textContent = palabraOculta;
-  guessesContainer.textContent = "Letras adivinadas:";
-  message.textContent = `Intentos restantes: ${intentosRestantes}`;
-  hint.textContent = `Pista: ${palabraActual.pista}`;
-  guessButton.disabled = false;
-  restartButton.style.display = "none";
-}
-restartButton.addEventListener("click", reiniciarJuego);
-// Función para mostrar un mensaje final cuando el jugador gane
-function mostrarMensajeFinal() {
-  if (!juegoTerminado || palabraOculta === palabraActual.palabra) {
-    return; // No muestra el mensaje si el juego no ha terminado o si el jugador ha ganado
-  }
-  setTimeout(() => {
-    const mensajeFinal = document.createElement("div");
-    mensajeFinal.textContent = "¡Felicidades! Has adivinado la palabra secreta.";
-    mensajeFinal.classList.add("mensaje-final");
-    document.body.appendChild(mensajeFinal);
-  }, 1000);
-}
-//// MUSICA DE BABASONICOS PLAYER
-const audioPlayer = document.getElementById("audio-player");
-function playPause() {
-  if (audioPlayer.paused) {
-    audioPlayer.play();
-    document.getElementById("guess-button").innerHTML = "¡Vive con Babasónicos! 🎶🤘";
-  } else {
-    audioPlayer.pause();
-    document.getElementById("guess-button").innerHTML = "Vive con alegría";
-  }
-}
-document.getElementById("guess-button").addEventListener("click", playPause);
-// Inicialización del juego
-actualizarPalabraOculta();
+        // --- DOM ELEMENTS (con nuevos elementos modales) ---
+        const elements = {
+            title: document.getElementById('title'),
+            wordContainer: document.getElementById("word-container"),
+            hintContainer: document.getElementById("hint-container"),
+            messageContainer: document.getElementById("message-container"),
+            keyboardContainer: document.getElementById("keyboard"),
+            restartButton: document.getElementById("restart-button"),
+            musicButton: document.getElementById("music-button"),
+            asciiHangman: document.getElementById('hangman-ascii'),
+            // MODAL
+            modalOverlay: document.getElementById('modal-overlay'),
+            modalTitle: document.getElementById('modal-title'),
+            modalMessage: document.getElementById('modal-message'),
+            modalCloseButton: document.getElementById('modal-close-button')
+        };
+        const sounds = {
+            audioPlayer: document.getElementById("audio-player"),
+            keyPress: document.getElementById("key-press-sound"),
+            correct: document.getElementById("correct-sound"),
+            wrong: document.getElementById("wrong-sound"),
+            win: document.getElementById('win-sound'),
+            lose: document.getElementById('lose-sound')
+        };
+        
+        // --- GAME DATA (con los nuevos mensajes motivadores) ---
+        const palabrasSecretas = [ /* Lista de palabras sin cambios */ { palabra: "javascript", pista: "Lenguaje de scripting para la web" }, { palabra: "python", pista: "Sintaxis limpia y versátil" }, { palabra: "html", pista: "La estructura de la web" }, { palabra: "css", pista: "Estilos para la web" }, { palabra: "java", pista: "Se ejecuta en 'VMs'" }, { palabra: "php", pista: "Común en servidores web" }, { palabra: "ruby", pista: "Conocido por su framework 'Rails'" }, { palabra: "csharp", pista: "'C#' de Microsoft" }, { palabra: "swift", pista: "Para aplicaciones de Apple" }, { palabra: "typescript", pista: "JS con tipos estáticos" },{ palabra: "rust", pista: "Lenguaje enfocado en seguridad y rendimiento" },{ palabra: "kotlin", pista: "Lenguaje moderno para desarrollo en Android" },{ palabra: "golang", pista: "Lenguaje concurrente creado por Google" },{ palabra: "scala", pista: "Lenguaje funcional y orientado a objetos en la JVM" },{ palabra: "bash", pista: "El shell por defecto en muchas distros Linux" },{ palabra: "react", pista: "Librería UI de Meta" }, { palabra: "angular", pista: "Framework UI de Google" },{ palabra: "vue", pista: "Framework progresivo de JS" },{ palabra: "svelte", pista: "Compilador que escribe código para desaparecer" },{ palabra: "django", pista: "Framework de Python con baterías incluidas" },{ palabra: "flask", pista: "Microframework de Python para web" },{ palabra: "express", pista: "Framework minimalista para NodeJS" },{ palabra: "jquery", pista: "La librería de JS que dominó una era" },{ palabra: "mysql", pista: "Base de datos relacional popular" }, { palabra: "mongodb", pista: "Base de datos NoSQL orientada a documentos" }, { palabra: "docker", pista: "Plataforma de contenedores" }, { palabra: "git", pista: "Control de versiones distribuido" }, { palabra: "api", pista: "Interfaz entre programas" }, { palabra: "nodejs", pista: "JS en el lado del servidor" },{ palabra: "postgresql", pista: "Base de datos relacional open-source avanzada" },{ palabra: "redis", pista: "Almacén en memoria, usado para caché" },{ palabra: "graphql", pista: "Lenguaje de consulta para APIs" },{ palabra: "webpack", pista: "Empaquetador de módulos para JS moderno" },{ palabra: "kubernetes", pista: "Orquestador de contenedores (K8s)" },{ palabra: "github", pista: "La plataforma más popular para alojar repositorios Git" },{ palabra: "jenkins", pista: "Servidor de automatización para CI/CD" },{ palabra: "algorithm", pista: "Conjunto de pasos para resolver un problema" },{ palabra: "variable", pista: "Contenedor para almacenar un valor" },{ palabra: "function", pista: "Bloque de código reutilizable que realiza una tarea" },{ palabra: "compiler", pista: "Traduce código fuente a código máquina" },{ palabra: "debugger", pista: "Herramienta para encontrar y corregir errores" },{ palabra: "boolean", pista: "Tipo de dato que solo puede ser verdadero o falso" },{ palabra: "object", pista: "Colección de propiedades y métodos" },{ palabra: "class", pista: "Plantilla para crear objetos" },{ palabra: "array", pista: "Estructura de datos que almacena una lista de elementos" } ];
+        const asciiHangmanStages = [ '  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========', '  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========', '  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========', '  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========', '  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n      |\n=========', '  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========', '  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n=========' ];
+        
+        const mensajesGanar = ["¡Tu código compiló a la perfección: Éxito!", "Has deployado la victoria en producción.", "¡Error 404: Rival no encontrado! Ganaste.", "Tu lógica fue impecable. ¡Sin bugs!", "¡Commit 'Victoria' pusheado a la rama master!", "Eres el Admin. Has obtenido acceso root a la victoria.", "¡El algoritmo de la victoria se ejecutó correctamente!", "Estado de la tarea: Resuelta. ¡Felicitaciones!", "La API devolvió un 200 OK. ¡Ganaste!", "Tu stack está completo: HTML, CSS, JS y Victoria.", "Pasaste todos los tests de unidad. ¡Eres un campeón!", "Resolviste la dependencia más difícil: ¡Ganar!", "El sistema te reconoce. Bienvenido, Ganador.", "Has superado el firewall de la derrota.", "¡Tu eficiencia es O(1)! Victoria instantánea.", "Fusionaste tu rama de esfuerzo con la de la victoria.", "No hubo excepciones. Un try-catch perfecto.", "Has optimizado tu estrategia hasta la victoria.", "La base de datos de ganadores tiene un nuevo registro: Tú.", "¡Tu nivel de abstracción es legendario! Ganaste."];
+        const mensajesPerder = ["La compilación falló, pero tu espíritu no. ¡Inténtalo de nuevo!", "Error de sintaxis en la línea final. Revisa y vuelve a intentarlo.", "Se ha producido una excepción no controlada. ¡El debugging continúa!", "No te preocupes. Todo programador pasa más tiempo debuggeando que codeando.", "Cada bug eliminado te acerca a la perfección. ¡Sigue adelante!", "Un 'commit' fallido no es el fin del 'repo'. ¡Vamos!", "Denegado. Código de error 500: error interno del servidor... de juego.", "La ruta a la victoria dio 404. Prueba otro endpoint.", "Esto no es un bug, es una feature inesperada. ¡Siguiente intento!", "Recuerda: 'rm -rf /' no es una solución. ¡Reintenta!", "Tu stack overflowed. Tómate un respiro y vuelve a la carga.", "No has fallado, solo encontraste una forma de no ganar.", "La recursividad falló. Vuelve al caso base e inténtalo.", "El recolector de basura se llevó tus intentos. ¡Genera nuevos!", "Incluso las IAs más avanzadas necesitan reentrenamiento. ¡Tú también!", "Se agotó el tiempo de espera de la solicitud. ¡La próxima será más rápida!", "El sistema necesita un reinicio. Y tú, una nueva oportunidad.", "Dependencia no resuelta. Falta un poco más de práctica.", "Merge conflict! Tu estrategia chocó con la realidad. ¡A resolverlo!", "Comenta esta partida y refactoriza tu estrategia para la próxima."];
 
+        let palabraActual, letrasAdivinadas, intentosFallidos, juegoTerminado, keyMap;
 
-//Efecto cascada
+        // --- FUNCIONES DEL JUEGO (MODIFICADAS PARA EL MODAL) ---
 
-var count = 200;
-var defaults = {
-  origin: { y: 0.7 }
-};
+        function iniciarJuego() {
+            // (Función sin cambios, reinicia el estado del juego)
+            const juegoActual = palabrasSecretas[Math.floor(Math.random() * palabrasSecretas.length)];
+            palabraActual = juegoActual.palabra;
+            letrasAdivinadas = [];
+            intentosFallidos = 0;
+            juegoTerminado = false;
+            
+            typeWriter(elements.hintContainer, `> HINT: ${juegoActual.pista}`);
+            typeWriter(elements.messageContainer, "> STATUS: ESPERANDO INPUT...");
+            elements.messageContainer.style.color = "var(--text-color)";
+            elements.restartButton.classList.remove('visible');
+            
+            elements.wordContainer.innerHTML = "";
+            palabraActual.split('').forEach(() => {
+                const letterEl = document.createElement('span');
+                letterEl.classList.add('letter-placeholder', 'empty');
+                elements.wordContainer.appendChild(letterEl);
+            });
+            
+            crearTeclado();
+            elements.asciiHangman.textContent = asciiHangmanStages[0];
+        }
 
-function fire(particleRatio, opts) {
-  confetti(Object.assign({}, defaults, opts, {
-    particleCount: Math.floor(count * particleRatio)
-  }));
-}
+        function manejarIntento(letra) {
+            // (Función sin cambios, gestiona cada intento)
+            if (juegoTerminado) return;
+            
+            letra = letra.toLowerCase();
+            const keyButton = keyMap[letra];
+            
+            if (!keyButton || keyButton.disabled) return;
+            
+            sounds.keyPress.currentTime = 0;
+            sounds.keyPress.play();
+            keyButton.disabled = true;
+            letrasAdivinadas.push(letra);
 
-// Función para generar una dirección de viento aleatoria
-function randomWindDirection() {
-  return Math.random() > 0.5 ? -1 : 1;
-}
+            if (palabraActual.includes(letra)) {
+                sounds.correct.currentTime = 0;
+                sounds.correct.play();
+                keyButton.classList.add('correct');
+                
+                palabraActual.split('').forEach((char, index) => {
+                    if (char === letra) {
+                        const letterElements = elements.wordContainer.children;
+                        letterElements[index].textContent = letra.toUpperCase();
+                        letterElements[index].classList.remove('empty');
+                    }
+                });
 
-// Función para iniciar el efecto de cascada
-function startConfetiCascada() {
-  var cascadeCount = 5; // Número de cascadas
-  var cascadeDuration = 1000; // Duración de cada cascada en milisegundos
+                if ([...elements.wordContainer.children].every(el => el.textContent !== '')) {
+                    finalizarJuego(true);
+                }
+            } else {
+                sounds.wrong.currentTime = 0;
+                sounds.wrong.play();
+                keyButton.classList.add('incorrect');
+                intentosFallidos++;
+                elements.asciiHangman.textContent = asciiHangmanStages[intentosFallidos];
+                
+                if (intentosFallidos >= asciiHangmanStages.length - 1) {
+                    finalizarJuego(false);
+                } else {
+                     typeWriter(elements.messageContainer, `> STATUS: ERROR. INTENTOS RESTANTES: ${asciiHangmanStages.length - 1 - intentosFallidos}`);
+                }
+            }
+        }
+        
+        function finalizarJuego(haGanado) {
+            juegoTerminado = true;
+            setTimeout(() => { // Pequeño retraso para ver el último movimiento
+                if (haGanado) {
+                    sounds.win.play();
+                    lanzarConfeti();
+                    mostrarModal(true);
+                } else {
+                    sounds.lose.play();
+                    mostrarModal(false);
+                }
+                elements.restartButton.classList.add('visible');
+            }, 500);
+        }
 
-  function launchCascade(index) {
-    setTimeout(function() {
-      var windDirection = index % 2 === 0 ? 1 : -1; // Cambiar dirección del viento en cada cascada
-      fire(1, {
-        spread: Math.random() * 100 + 26,
-        startVelocity: Math.random() * 100 + 25,
-        decay: Math.random() * 0.2 + 0.7,
-        scalar: Math.random() + 0.5,
-        gravity: Math.random() * 0.5 + 0.2, // Gravedad aleatoria
-        wind: windDirection * Math.random() * 10 // Dirección y velocidad del viento aleatoria
-      });
+        function mostrarModal(esVictoria) {
+            const titulo = esVictoria ? 'GANASTE!!!' : 'PERDISTE...';
+            const claseTitulo = esVictoria ? 'win-title' : 'lose-title';
+            const mensaje = esVictoria 
+                ? mensajesGanar[Math.floor(Math.random() * mensajesGanar.length)] 
+                : mensajesPerder[Math.floor(Math.random() * mensajesPerder.length)];
+            
+            elements.modalTitle.textContent = titulo;
+            elements.modalTitle.className = ''; // Limpia clases previas
+            elements.modalTitle.classList.add(claseTitulo);
+            typeWriter(elements.modalMessage, `> ${mensaje}`, 40);
 
-      if (index < cascadeCount - 1) {
-        launchCascade(index + 1); // Iniciar la siguiente cascada
-      }
-    }, cascadeDuration);
-  }
+            elements.modalOverlay.classList.remove('hidden');
+        }
 
-  // Iniciar la primera cascada
-  launchCascade(0);
-}
+        function ocultarModal() {
+            elements.modalOverlay.classList.add('hidden');
+        }
 
-// Agregar un controlador de clic al botón
-document.getElementById('guess-button').addEventListener('click', startConfetiCascada);
+        // --- FUNCIONES AUXILIARES Y EVENT LISTENERS (con nuevos listeners para el modal) ---
+        function crearTeclado() {
+            elements.keyboardContainer.innerHTML = ''; keyMap = {};
+            'abcdefghijklmnopqrstuvwxyz'.split('').forEach(letra => {
+                const button = document.createElement('button');
+                button.textContent = letra; button.classList.add('key');
+                button.addEventListener('click', () => manejarIntento(letra));
+                elements.keyboardContainer.appendChild(button); keyMap[letra] = button;
+            });
+        }
+        function lanzarConfeti() { confetti({ particleCount: 150, spread: 180, origin: { y: 0.6 } }); }
+        function alternarMusica() {
+            if (sounds.audioPlayer.paused) { sounds.audioPlayer.play(); elements.musicButton.textContent = "[ Stop Music ]"; } 
+            else { sounds.audioPlayer.pause(); elements.musicButton.textContent = "[ Play Music ]"; }
+        }
+        
+        elements.restartButton.addEventListener('click', iniciarJuego);
+        elements.musicButton.addEventListener('click', alternarMusica);
+        elements.modalCloseButton.addEventListener('click', ocultarModal);
+        
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && !elements.modalOverlay.classList.contains('hidden')) {
+                ocultarModal();
+            } else if (e.key.match(/^[a-z]$/i)) {
+                manejarIntento(e.key);
+            }
+        });
 
+        // --- INICIAR EL JUEGO ---
+        typeWriter(elements.title, "> Executing program 'Programador_Ahorcado.exe'...", 70, iniciarJuego);
+    });

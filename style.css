@@ -1,308 +1,120 @@
-/* Estilos generales */
-body {
-    text-align: center;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    background-color: #0d1117;
-    color: #58a6ff;
-    background-image: 
-        linear-gradient(rgba(13,17,23,0.95), rgba(13,17,23,0.95)),
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231158c7' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-}
+        :root {
+            --bg-color: #000;
+            --scanline-color: rgba(0, 255, 0, 0.1);
+            --glow-color: #0f0;
+            --text-color: #0f0;
+            --error-color: #f00;
+            --terminal-bg: rgba(0, 15, 0, 0.85);
+        }
 
-/* Contenedor de palabras */
-#word-container {
-    font-size: 24px;
-    margin: 20px auto;
-    background-color: #161b22;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(88,166,255,0.1);
-    border: 1px solid #30363d;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 4px;
-    max-width: 700px;
-    position: relative;
-    overflow: hidden;
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { background-color: var(--bg-color); }
+        body {
+            font-family: 'VT323', monospace;
+            color: var(--text-color);
+            text-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-#word-container::before {
-    content: '>';
-    position: absolute;
-    left: 10px;
-    color: #58a6ff;
-    opacity: 0.5;
-}
+        #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
+        .terminal-window {
+            background: var(--terminal-bg);
+            border: 2px solid var(--glow-color);
+            box-shadow: 0 0 20px var(--glow-color) inset, 0 0 20px var(--glow-color);
+            padding: 20px;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal-window::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, var(--scanline-color) 0, var(--scanline-color) 1px, transparent 1px, transparent 3px);
+            pointer-events: none;
+            z-index: 2;
+        }
 
-/* Contenedores */
-#guesses-container,
-#alphabet-container {
-    font-size: 16px;
-    margin: 15px auto;
-    background-color: #161b22;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #30363d;
-    max-width: 600px;
-}
+        .terminal-header {
+            background: var(--glow-color);
+            color: var(--bg-color);
+            text-shadow: none;
+            padding: 5px;
+            margin: -20px -20px 20px -20px;
+            font-size: 1.2rem;
+            text-align: left;
+            padding-left: 15px;
+        }
 
-/* Mensaje y pista */
-#message, #hint {
-    font-size: 15px;
-    color: #58a6ff;
-    text-shadow: 0 0 8px rgba(88,166,255,0.2);
-    margin: 12px 0;
-    padding: 8px;
-    background-color: #161b22;
-    border-radius: 6px;
-    border: 1px solid #30363d;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
+        .game-container { display: flex; gap: 20px; }
+        .left-panel { flex: 1; padding-right: 20px; border-right: 1px dashed var(--text-color); }
+        .right-panel { flex: 2; display: flex; flex-direction: column; gap: 20px; }
+        #hangman-ascii { font-size: 1rem; white-space: pre; line-height: 1.1; }
+        #title, #hint-container { font-size: 1.5rem; }
 
-#message.error {
-    color: #f85149;
-    border-color: #f85149;
-}
+        #word-container { display: flex; gap: 15px; font-size: 3rem; height: 60px; margin-bottom: 10px; align-items: center; }
+        .letter-placeholder { border-bottom: 4px solid var(--text-color); width: 40px; text-align: center; position: relative; }
+        .letter-placeholder.empty::after { content: '█'; position: absolute; left: 50%; transform: translateX(-50%); animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; }}
 
-/* Letras del abecedario */
-.alphabet-letter {
-    display: inline-block;
-    margin: 4px;
-    padding: 8px 12px;
-    font-size: 14px;
-    border: 1px solid #30363d;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #21262d;
-    color: #58a6ff;
-    transition: all 0.2s ease;
-    min-width: 35px;
-}
+        #message-container { font-size: 1.3rem; height: 25px; min-height: 25px; }
+        #keyboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 
-.alphabet-letter:hover {
-    background-color: #58a6ff;
-    color: #0d1117;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(88,166,255,0.2);
-}
+        .key { font-family: inherit; font-size: 1.5rem; background: transparent; border: 1px solid var(--text-color); color: var(--text-color); width: 50px; height: 50px; cursor: pointer; transition: all 0.2s; text-shadow: inherit; }
+        .key:hover:not(:disabled) { background: var(--glow-color); color: var(--bg-color); text-shadow: none; }
+        .key:disabled { opacity: 0.4; cursor: not-allowed; border-style: dashed; }
+        .key.correct { background: var(--glow-color); color: var(--bg-color); text-shadow: none; }
+        .key.incorrect { background: var(--error-color); border-color: var(--error-color); color: var(--bg-color); text-shadow: none; }
+        
+        #controls { margin-top: 15px; text-align: center; }
+        .control-button { font-family: inherit; font-size: 1.2rem; padding: 10px 20px; margin: 5px; background: transparent; border: 1px solid var(--text-color); color: var(--text-color); cursor: pointer; text-shadow: inherit; }
+        .control-button:hover { background: var(--glow-color); color: var(--bg-color); text-shadow: none; }
+        #restart-button { opacity: 0; visibility: hidden; transition: opacity 0.5s; }
+        #restart-button.visible { opacity: 1; visibility: visible; }
+        
+        /* --- MODAL STYLES --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.hidden { display: none; }
 
-.alphabet-letter:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background-color: #21262d;
-    color: #8b949e;
-}
+        #modal-content {
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
+        #modal-title {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .win-title { color: var(--glow-color); text-shadow: 0 0 15px var(--glow-color); }
+        .lose-title { color: var(--error-color); text-shadow: 0 0 15px var(--error-color); }
 
-/* Botones */
-#restart-button,
-#guess-button {
-    font-size: 14px;
-    padding: 10px 20px;
-    border: 1px solid #58a6ff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'JetBrains Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 8px;
-    background-color: transparent;
-    color: #58a6ff;
-    position: relative;
-    overflow: hidden;
-}
+        #modal-message { font-size: 1.5rem; text-align: center; min-height: 60px; }
+        #modal-close-button { margin-top: 25px; }
 
-#restart-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    box-shadow: 0 4px 15px rgba(255,107,107,0.4);
-    animation: pulse 2s infinite;
-}
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-#restart-button:hover {
-    background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255,107,107,0.6);
-}
-
-#guess-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(88,166,255,0.2),
-        transparent
-    );
-    transition: 0.5s;
-}
-
-#guess-button:hover::before {
-    left: 100%;
-}
-
-#guess-button:hover {
-    background-color: #58a6ff;
-    color: #0d1117;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(88,166,255,0.2);
-}
-
-/* Media Queries - Tablets */
-@media (max-width: 1024px) {
-    body {
-        padding: 15px;
-        max-width: 90%;
-    }
-
-    #word-container {
-        font-size: 22px;
-        max-width: 90%;
-    }
-
-    .alphabet-letter {
-        padding: 7px 11px;
-        margin: 3px;
-        min-width: 32px;
-    }
-}
-
-/* Media Queries - Tablets pequeñas */
-@media (max-width: 768px) {
-    body {
-        padding: 12px;
-    }
-    
-    #word-container {
-        font-size: 20px;
-        padding: 12px 20px;
-        max-width: 95%;
-        letter-spacing: 3px;
-    }
-    
-    .alphabet-letter {
-        padding: 6px 10px;
-        margin: 3px;
-        min-width: 30px;
-        font-size: 13px;
-    }
-
-    #restart-button {
-        bottom: 15px;
-        right: 15px;
-        padding: 10px 20px;
-        font-size: 13px;
-    }
-
-    #guesses-container,
-    #alphabet-container {
-        max-width: 95%;
-        padding: 12px;
-    }
-}
-
-/* Media Queries - Móviles */
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-
-    #word-container {
-        font-size: 16px;
-        padding: 10px 15px;
-        letter-spacing: 2px;
-        margin: 15px auto;
-    }
-    
-    .alphabet-letter {
-        font-size: 12px;
-        padding: 5px 8px;
-        margin: 2px;
-        min-width: 25px;
-    }
-    
-    #guess-button {
-        font-size: 12px;
-        padding: 8px 16px;
-        margin: 5px;
-    }
-
-    #restart-button {
-        bottom: 10px;
-        right: 10px;
-        padding: 8px 16px;
-        font-size: 12px;
-    }
-
-    #message, #hint {
-        font-size: 13px;
-        padding: 6px;
-        margin: 8px 0;
-    }
-}
-
-/* Media Queries - Móviles pequeños */
-@media (max-width: 320px) {
-    body {
-        padding: 10px;
-    }
-    
-    #word-container {
-        font-size: 16px;
-        padding: 10px 12px;
-        letter-spacing: 2px;
-    }
-    
-    .alphabet-letter {
-        font-size: 16px;
-        padding: 8px 10px;
-        margin: 3px;
-        min-width: 32px;
-    }
-
-    #restart-button {
-        bottom: 10px;
-        right: 10px;
-        padding: 8px 15px;
-        font-size: 12px;
-    }
-
-    #guesses-container,
-    #alphabet-container {
-        padding: 10px;
-        margin: 12px auto;
-    }
-
-    #message, #hint {
-        font-size: 13px;
-        padding: 6px;
-    }
-}
+        @media (max-width: 768px) {
+            .game-container { flex-direction: column; }
+            .left-panel { border-right: none; border-bottom: 1px dashed var(--text-color); padding-right: 0; padding-bottom: 20px; text-align: center; }
+            #word-container { font-size: 2rem; justify-content: center; }
+            .letter-placeholder { width: 30px; }
+            .key { width: 40px; height: 40px; font-size: 1.2rem; }
+        }
