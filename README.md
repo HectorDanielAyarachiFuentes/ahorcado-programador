@@ -17,7 +17,7 @@ Aquí tienes un vistazo a la interfaz en acción. Cada letra cuenta.
 
 <!-- GitHub no renderiza videos .webm directamente, pero el enlace es correcto para el repositorio.
      Para una visualización directa, se recomienda convertirlo a .gif -->
-![Gameplay del Ahorcado](Imagenes%20del%20Readme/jugandogifs.webm)
+![Gameplay del Ahorcado](Imagenes%20del%20Readme/jugandogifs.gif)
 
 ---
 
