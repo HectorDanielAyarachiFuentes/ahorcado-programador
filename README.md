@@ -1,37 +1,80 @@
-# Juego del Ahorcado
+# 🎮 AHORCADO-PROGRAMADOR: Terminal Edition 👾
 
-Bienvenido al juego del Ahorcado, donde la diversión y el desafío se combinan. ¡Veamos cómo te va!
+> `> SYSTEM.LOG: INICIANDO PROTOCOLO "JUEGO DEL AHORCADO"...`
+> `> CARGANDO... BIENVENIDO, USUARIO.`
 
-![Visión General del Juego](https://github.com/HectorDanielAyarachiFuentes/ahorcado/blob/main/Imagenes%20del%20Readme/Opera%20Instant%C3%A1nea_2023-09-30_082958_hectordanielayarachifuentes.github.io.png?raw=true)
+¡Este no es el típico juego del ahorcado! Sumérgete en una experiencia retro con una estética de terminal de los 80's. ¿Tienes lo necesario para descifrar la palabra clave antes de que el sistema se agote y la conexión se pierda?
 
-En la imagen de arriba, puedes ver una visión general del juego. ¡Prepárate para adivinar la palabra oculta!
+**[▶️ JUEGA AHORA!](https://hectordanielayarachifuentes.github.io/ahorcado/)**
 
-![Visión General del Juego](https://github.com/HectorDanielAyarachiFuentes/ahorcado/blob/main/Imagenes%20del%20Readme/gif%20juego%20ahorcado.gif?raw=true)
+---
 
-## ¡Has Ganado!
+## 🚀 Vista Previa del Sistema
 
-![Mensaje de Victoria](https://github.com/HectorDanielAyarachiFuentes/ahorcado/blob/main/Imagenes%20del%20Readme/Opera%20Instant%C3%A1nea_2023-09-30_083039_hectordanielayarachifuentes.github.io.png?raw=true)
+`> RUNNING "game_preview.webm"...`
 
-¡Felicidades! Has ganado el juego del Ahorcado. Eres un adivino talentoso. 
+Aquí tienes un vistazo a la interfaz en acción. Cada letra cuenta.
 
-## Intentos Restantes
+<!-- GitHub no renderiza videos .webm directamente, pero el enlace es correcto para el repositorio.
+     Para una visualización directa, se recomienda convertirlo a .gif -->
+![Gameplay del Ahorcado](Imagenes%20del%20Readme/jugandogifs.webm)
 
-![Intentos Restantes](https://github.com/HectorDanielAyarachiFuentes/ahorcado/blob/main/Imagenes%20del%20Readme/Opera%20Instant%C3%A1nea_2023-09-30_083106_hectordanielayarachifuentes.github.io.png?raw=true)
+---
 
-Te informamos cuántos intentos te quedan. ¡No dejes que se agoten!
+## 📋 Características del Sistema
 
-## ¡Adivinaste Correctamente!
+`> ANALYZING FEATURES...`
 
-![Adivinaste Correctamente](https://github.com/HectorDanielAyarachiFuentes/ahorcado/blob/main/Imagenes%20del%20Readme/Opera%20Instant%C3%A1nea_2023-09-30_083128_hectordanielayarachifuentes.github.io.png?raw=true)
+*   **👾 Estética Retro-Terminal:** Una interfaz inspirada en las consolas clásicas y el estilo "Matrix" para una inmersión total.
+*   **🎵 Audio Envolvente:** Música de fondo y efectos de sonido que te transportarán a la era dorada de la programación.
+*   **🎨 ASCII Art Dinámico:** El muñeco del ahorcado se dibuja en arte ASCII, completándose con cada error que cometes.
+*   **📱 Diseño Adaptable:** La experiencia está optimizada para que puedas jugar sin problemas tanto en tu escritorio como en dispositivos móviles.
+*   **🎉 Celebración de Victoria:** ¡Gana y el sistema te recompensará con una satisfactoria lluvia de confeti!
+*   **⌨️ Teclado Interactivo:** Un teclado virtual en pantalla que responde a tus acciones con efectos visuales y sonoros.
 
-Bien hecho, has adivinado una letra correctamente. ¡Sigue así!
+---
 
-## ¡Has Perdido!
+## 🖼️ Galería de la Interfaz
 
-![Mensaje de Derrota](https://github.com/HectorDanielAyarachiFuentes/ahorcado/blob/main/Imagenes%20del%20Readme/Opera%20Instant%C3%A1nea_2023-09-30_083141_hectordanielayarachifuentes.github.io.png?raw=true)
+`> LOADING "screenshots.data"...`
 
-A veces no podemos ganar, pero no te preocupes. Te animamos a seguir adelante a pesar de las circunstancias.
+A continuación, una inspección de los diferentes estados del sistema.
 
-Haz clic en "Vivir con alegría" y descubrirás una hermosa sorpresa. ¡Actívalo y disfruta!
+| Inicio del Juego | Estado de Victoria | Estado de Derrota | Versión Móvil |
+| :--------------: | :----------------: | :-----------------: | :------------------: |
+| *Iniciando conexión...* | *PROTOCOLO COMPLETADO* | *ERROR CRÍTICO DEL SISTEMA* | *ACCESO REMOTO MÓVIL* |
+| ![Interfaz de Inicio](Imagenes%20del%20Readme/interfaz-inicio.jpeg) | ![Pantalla de Victoria](Imagenes%20del%20Readme/ganaste.jpeg) | ![Pantalla de Derrota](Imagenes%20del%20Readme/perdiste.jpeg) | ![Versión Móvil](Imagenes%20del%20Readme/versionmovil.png) |
 
-¡Diviértete jugando al Ahorcado y sigue adelante con una actitud positiva!
+---
+
+## 🛠️ Tecnologías Implementadas
+
+`> LISTING "tech_stack.dll"...`
+
+Este proyecto fue construido utilizando tecnologías web fundamentales para garantizar una experiencia fluida y moderna bajo una capa de nostalgia.
+
+*   **HTML5:** Para la estructura semántica y la base del juego.
+*   **CSS3:** Para dar vida a la estética de la terminal, con animaciones, `flexbox`, y diseño responsivo.
+*   **JavaScript (ES6+):** Para toda la lógica del juego, la interactividad, el manejo de eventos y la manipulación del DOM.
+
+---
+
+## ⚙️ Cómo Ejecutar Localmente
+
+`> DISPLAYING "local_setup.txt"...`
+
+Si deseas ejecutar una instancia local del juego en tu propia máquina, sigue estos comandos en tu terminal:
+
+1.  **Clona el repositorio:**
+    ```bash
+    git clone https://github.com/HectorDanielAyarachiFuentes/ahorcado.git
+    ```
+2.  **Navega al directorio del proyecto:**
+    ```bash
+    cd ahorcado
+    ```
+3.  **Abre el archivo `index.html` en tu navegador de preferencia.**
+
+¡Y listo! Ya puedes empezar a hack... digo, a jugar.
+
+> `> PROCESO FINALIZADO. ESPERANDO NUEVAS INSTRUCCIONES...`
